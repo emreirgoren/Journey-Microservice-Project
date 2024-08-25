@@ -21,7 +21,7 @@ public class EmailNotificationStrategy implements NotificationStrategy{
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(notification.getNotificationUser());
-        message.setSubject("Notification test mail");
+        message.setSubject("Notification Email");
         message.setText(notification.getNotificationMessage());
         mailSender.send(message);
 
