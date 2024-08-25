@@ -11,7 +11,7 @@ public class SmsNotificationStrategy implements NotificationStrategy{
     @Override
     public void send(Notification notification) {
 
-
+        //Sms gönderme işlemleri
 
     }
 

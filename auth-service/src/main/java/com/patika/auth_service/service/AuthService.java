@@ -11,10 +11,14 @@ import com.patika.auth_service.exception.AuthServiceException;
 import com.patika.auth_service.exception.ExceptionMessages;
 import com.patika.auth_service.model.Role;
 import com.patika.auth_service.model.User;
+import com.patika.auth_service.producer.RabbitProducer;
+import com.patika.auth_service.producer.model.Notification;
+import com.patika.auth_service.producer.model.enums.NotificationType;
 import com.patika.auth_service.utils.JwtUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -25,11 +29,13 @@ public class AuthService {
     private UserClientService userClientService;
     private final PasswordEncoderConfig passwordEncoderConfig;
     private final JwtUtil jwtUtil;
+    private final RabbitProducer rabbitProducer;
 
-    public AuthService(UserClientService userClientService, PasswordEncoderConfig passwordEncoderConfig, JwtUtil jwtUtil) {
+    public AuthService(UserClientService userClientService, PasswordEncoderConfig passwordEncoderConfig, JwtUtil jwtUtil, RabbitProducer rabbitProducer) {
         this.userClientService = userClientService;
         this.passwordEncoderConfig = passwordEncoderConfig;
         this.jwtUtil = jwtUtil;
+        this.rabbitProducer = rabbitProducer;
     }
 
     public GenericResponse<User> register(UserSaveRequest request) {
@@ -39,14 +45,6 @@ public class AuthService {
         if (isExists) {
             throw new AuthServiceException(ExceptionMessages.USER_ALREADY_DEFINED);
         }
-
-        /*Role adminRole = roleRepository.findAll()
-                .stream()
-                .filter(role -> role.getName().equals("ADMIN"))
-                .findFirst()
-                .orElseThrow(() -> new AuthServiceException(ExceptionMessages.ROLE_NOT_FOUND));*/
-
-        //Role role = userClientService.getUsersRoles(request.getEmail())
 
         Role defaultRole = new Role(2l,"USER");
         Set<Role> roleSet = new HashSet<>();
@@ -63,9 +61,14 @@ public class AuthService {
                 .roleSet(roleSet)
                 .build();
 
-
-
         userClientService.save(UserConverter.userToCustomUser(user));
+
+        Notification notification = new Notification();
+        notification.setNotificationMessage(request.getEmail() + " Kayıt oldu.");
+        notification.setNotificationTime(LocalDateTime.now());
+        notification.setNotificationUser(request.getEmail());
+        notification.setNotificationType(NotificationType.EMAIL);
+        rabbitProducer.sendNotification(notification);
 
         return GenericResponse.success(user, HttpStatus.CREATED);
 
