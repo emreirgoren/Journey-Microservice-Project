@@ -19,10 +19,10 @@ public class ExceptionService {
     public void handleException(ExceptionTemplate exceptionTemplate) {
 
         Exception exception = Exception.builder()
-                        .serviceType(exceptionTemplate.getServiceType())
-                                .exceptionMessage(exceptionTemplate.getExceptionMessage())
-                                        .exceptionStatusCode(exceptionTemplate.getExceptionStatusCode())
-                                                .build();
+                .serviceType(exceptionTemplate.getServiceType())
+                .exceptionMessage(exceptionTemplate.getExceptionMessage())
+                .exceptionStatusCode(exceptionTemplate.getExceptionStatusCode())
+                .build();
         exceptionRepository.save(exception);
 
     }
