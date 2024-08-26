@@ -10,11 +10,15 @@ import com.patika.ticket_search_service.model.Journey;
 import com.patika.ticket_search_service.repository.JourneyElasticsearchRepository;
 import com.patika.ticket_search_service.service.businessRules.TicketRules;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,6 +36,9 @@ public class TicketService {
         this.ticketRules = ticketRules;
     }
 
+    @CacheEvict(cacheNames = "journeys", allEntries = true)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackForClassName = {"JourneyNotFoundException.class"}
+            , rollbackFor = SQLException.class)
     public List<JourneySearchResponse> getTicketListByCity(JourneySearchByCityRequest request) {
 
         Sort sort = Sort.by("departureDate").ascending();
@@ -51,6 +58,9 @@ public class TicketService {
         return journeySearchResponseList;
     }
 
+    @CacheEvict(cacheNames = "journeys", allEntries = true)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackForClassName = {"JourneyNotFoundException.class"}
+            , rollbackFor = SQLException.class)
     public List<JourneySearchResponse> getTicketListByCityAndVehicleType(JourneySearchByCityAndVehicleTypeRequest request) {
 
         Sort sort = Sort.by("departureDate").ascending();
@@ -70,6 +80,9 @@ public class TicketService {
         return journeySearchResponseList;
     }
 
+    @CacheEvict(cacheNames = "journeys", allEntries = true)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackForClassName = {"JourneyNotFoundException.class"}
+            , rollbackFor = SQLException.class)
     public List<JourneySearchResponse> getTicketListByCityAndDepartureDate(JourneySearchByCityAndDepartureDateRequest request) {
 
         Sort sort = Sort.by("departureDate").ascending();
