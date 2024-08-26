@@ -2,6 +2,7 @@ package com.patika.user_service.controller;
 
 import com.patika.user_service.model.User;
 import com.patika.user_service.service.UserService;
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -42,6 +43,11 @@ public class UserController {
     public boolean changeRole(@PathVariable String email){
 
         return userService.changeRole(email);
+    }
+
+    @PostMapping(path = "/userInformation")
+    public User userInformation(@RequestHeader("Authorization") String token){
+        return userService.userInfomation(token);
     }
 
 }

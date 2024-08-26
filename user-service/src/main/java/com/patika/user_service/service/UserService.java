@@ -6,6 +6,7 @@ import com.patika.user_service.model.Role;
 import com.patika.user_service.model.User;
 import com.patika.user_service.repository.RoleRepository;
 import com.patika.user_service.repository.UserRepository;
+import com.patika.user_service.utils.JwtUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,10 +17,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final JwtUtil jwtUtil;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.jwtUtil = jwtUtil;
     }
 
     public long getUserId(String email) {
@@ -63,5 +66,10 @@ public class UserService {
 
         return user.getRoleSet().contains(roleRepository.findById(1L).get());
 
+    }
+
+    public User userInfomation(String token) {
+        String email = jwtUtil.extractEmail2(token);
+        return userRepository.findByEmail(email).get();
     }
 }
