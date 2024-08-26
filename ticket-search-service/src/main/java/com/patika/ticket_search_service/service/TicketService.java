@@ -36,9 +36,6 @@ public class TicketService {
         this.ticketRules = ticketRules;
     }
 
-    @CacheEvict(cacheNames = "journeys", allEntries = true)
-    @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackForClassName = {"JourneyNotFoundException.class"}
-            , rollbackFor = SQLException.class)
     public List<JourneySearchResponse> getTicketListByCity(JourneySearchByCityRequest request) {
 
         Sort sort = Sort.by("departureDate").ascending();
@@ -58,9 +55,6 @@ public class TicketService {
         return journeySearchResponseList;
     }
 
-    @CacheEvict(cacheNames = "journeys", allEntries = true)
-    @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackForClassName = {"JourneyNotFoundException.class"}
-            , rollbackFor = SQLException.class)
     public List<JourneySearchResponse> getTicketListByCityAndVehicleType(JourneySearchByCityAndVehicleTypeRequest request) {
 
         Sort sort = Sort.by("departureDate").ascending();
@@ -80,9 +74,6 @@ public class TicketService {
         return journeySearchResponseList;
     }
 
-    @CacheEvict(cacheNames = "journeys", allEntries = true)
-    @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackForClassName = {"JourneyNotFoundException.class"}
-            , rollbackFor = SQLException.class)
     public List<JourneySearchResponse> getTicketListByCityAndDepartureDate(JourneySearchByCityAndDepartureDateRequest request) {
 
         Sort sort = Sort.by("departureDate").ascending();
