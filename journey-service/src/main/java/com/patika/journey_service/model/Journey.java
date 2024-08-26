@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -18,7 +19,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "journeys")
-public class Journey {
+public class Journey implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

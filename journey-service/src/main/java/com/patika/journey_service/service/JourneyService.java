@@ -10,16 +10,17 @@ import com.patika.journey_service.dto.response.SalesReport;
 import com.patika.journey_service.model.Journey;
 import org.springframework.http.ResponseEntity;
 
+import java.io.Serializable;
 import java.util.List;
 
 public interface JourneyService {
 
 
-    ResponseEntity<GenericResponse<JourneyCreateResponse>> createJourney(JourneyCreateRequest request);
+    GenericResponse<JourneyCreateResponse> createJourney(JourneyCreateRequest request);
 
     ResponseEntity<GenericResponse<JourneyCancelledResponse>> cancelledJourney(JourneyCancelledRequest request);
 
-    ResponseEntity<List<Journey>> getJourneyList();
+    List<Journey> getJourneyList();
 
     List<SalesReport> getSalesReport();
 

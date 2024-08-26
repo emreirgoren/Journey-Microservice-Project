@@ -18,10 +18,15 @@ import com.patika.journey_service.service.JourneyService;
 import com.patika.journey_service.service.businessRules.JourneyRules;
 import com.patika.journey_service.util.GenerateTicketCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -49,8 +54,11 @@ public class JourneyServiceImpl implements JourneyService {
     /**
      * Create Journey
      */
+    @CacheEvict(cacheNames = "journeys", allEntries = true)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, noRollbackForClassName = {"JourneyNotFoundException.class"}
+            , rollbackFor = SQLException.class)
     @Override
-    public ResponseEntity<GenericResponse<JourneyCreateResponse>> createJourney(JourneyCreateRequest request) {
+    public GenericResponse<JourneyCreateResponse> createJourney(JourneyCreateRequest request) {
 
         journeyRules.limitExceededJourneyRule(request);
 
@@ -68,10 +76,10 @@ public class JourneyServiceImpl implements JourneyService {
         logTemplate.setMessage(journeyCreateResponse.getTicketCode());
         kafkaProducer.sendLog(logTemplate);
 
-        return new ResponseEntity<>(GenericResponse.success(
+        return GenericResponse.success(
                 GenericResponseSuccessConstants.JOURNEY_CREATED,
                 HttpStatus.CREATED,
-                journeyCreateResponse), HttpStatus.CREATED);
+                journeyCreateResponse);
     }
 
     /**
@@ -105,9 +113,13 @@ public class JourneyServiceImpl implements JourneyService {
     /**
      * Journey List
      */
+    @Cacheable(value = "journeys", cacheNames = "journeys")
+    @Transactional(readOnly = true)
     @Override
-    public ResponseEntity<List<Journey>> getJourneyList() {
-        return new ResponseEntity<>(journeyJpaRepository.findAll(), HttpStatus.OK);
+    public List<Journey> getJourneyList() {
+        List<Journey> listResponseEntity = journeyJpaRepository.findAll();
+        log.info("bloglar dbden getirildi");
+        return listResponseEntity;
     }
 
     /**
@@ -142,6 +154,8 @@ public class JourneyServiceImpl implements JourneyService {
                 .collect(Collectors.toList());
     }
 
+    @Cacheable(value = "journeys", cacheNames = "journeys")
+    @Transactional(readOnly = true)
     @Override
     public Journey getJourney(String ticketCode) {
 

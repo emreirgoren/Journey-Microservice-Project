@@ -9,11 +9,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GenericResponse<T> {
+public class GenericResponse<T> implements Serializable {
 
     private String message;
     private String status;

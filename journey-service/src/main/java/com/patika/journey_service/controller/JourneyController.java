@@ -29,7 +29,7 @@ public class JourneyController {
      */
 
     @PostMapping
-    public ResponseEntity<GenericResponse<JourneyCreateResponse>> createJourney(@RequestBody JourneyCreateRequest request) {
+    public GenericResponse<JourneyCreateResponse> createJourney(@RequestBody JourneyCreateRequest request) {
         return journeyService.createJourney(request);
     }
 
@@ -42,7 +42,7 @@ public class JourneyController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Journey>> getList() {
+    public List<Journey> getList() {
         return journeyService.getJourneyList();
     }
 
