@@ -1,10 +1,11 @@
 package com.patika.user_service.service;
 
+import com.patika.user_service.exception.ExceptionMessages;
+import com.patika.user_service.exception.UserServiceException;
 import com.patika.user_service.model.Role;
 import com.patika.user_service.model.User;
 import com.patika.user_service.repository.RoleRepository;
 import com.patika.user_service.repository.UserRepository;
-import jakarta.security.auth.message.AuthException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -49,5 +50,18 @@ public class UserService {
     }
 
 
+    public boolean changeRole(String email) {
 
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+
+        if(optionalUser.isEmpty()){
+            throw new UserServiceException(ExceptionMessages.USER_NOT_FOUND);
+        }
+        User user = optionalUser.get();
+
+        user.getRoleSet().add(roleRepository.findById(1L).get());
+
+        return user.getRoleSet().contains(roleRepository.findById(1L).get());
+
+    }
 }

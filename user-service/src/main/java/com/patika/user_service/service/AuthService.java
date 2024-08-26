@@ -3,7 +3,7 @@ package com.patika.user_service.service;
 import com.patika.user_service.config.BeanConfig;
 import com.patika.user_service.dto.request.UserLoginRequest;
 import com.patika.user_service.dto.request.UserSaveRequest;
-import com.patika.user_service.exception.BlogHubException;
+import com.patika.user_service.exception.UserServiceException;
 import com.patika.user_service.exception.ExceptionMessages;
 import com.patika.user_service.model.Role;
 import com.patika.user_service.model.User;
@@ -37,7 +37,7 @@ private final BeanConfig beanConfig;
         boolean isExists = userRepository.existsByEmail(request.getEmail());
 
         if (isExists) {
-            throw new BlogHubException(ExceptionMessages.USER_ALREADY_DEFINED);
+            throw new UserServiceException(ExceptionMessages.USER_ALREADY_DEFINED);
         }
 
 
@@ -45,7 +45,7 @@ private final BeanConfig beanConfig;
                 .stream()
                 .filter(role -> role.getName().equals("ADMIN"))
                 .findFirst()
-                .orElseThrow(() -> new BlogHubException(ExceptionMessages.ROLE_NOT_FOUND));
+                .orElseThrow(() -> new UserServiceException(ExceptionMessages.ROLE_NOT_FOUND));
 
 
         User user = User.builder()
@@ -68,7 +68,7 @@ private final BeanConfig beanConfig;
         Optional<User> user = userRepository.findByEmail(request.getEmail());
 
         if (user.isEmpty()){
-            throw new BlogHubException(ExceptionMessages.USER_NOT_FOUND);
+            throw new UserServiceException(ExceptionMessages.USER_NOT_FOUND);
         }
             return jwtUtil.generateToken(user.get());
     }

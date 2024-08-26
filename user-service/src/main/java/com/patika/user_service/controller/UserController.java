@@ -38,4 +38,10 @@ public class UserController {
         return userService.getUserByEmail(email);
     }
 
+    @PostMapping(path = "/changeRole/{email}")
+    public boolean changeRole(@PathVariable String email){
+
+        return userService.changeRole(email);
+    }
+
 }
