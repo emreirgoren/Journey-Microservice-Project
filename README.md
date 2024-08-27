@@ -26,6 +26,10 @@ Proje microservice mimarisi olarak tasarlanmıştır.
 
 ## Proje Diagramı
 
+<p align="center">
+    <img src ="/screenshots/final-project-diagram.png">
+</p>
+
 ## Projenin Çalıştırılması
 
  - Projenin ihtiyaç duyduğu teknolojiler ve veritabanları için docker-compose dosyası çalıştırılır. --> "docker-compose up -d"
