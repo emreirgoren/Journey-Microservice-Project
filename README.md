@@ -30,6 +30,21 @@ Proje microservice mimarisi olarak tasarlanmıştır.
     <img src ="/screenshots/final-project-diagram.png">
 </p>
 
+## Kullanılan Teknolojiler
+ - Java
+ - Spring Security
+ - Spring WebFlux
+ - Spring Boot
+ - Open Feign
+ - Eureka Server
+ - Redis
+ - ElasticSearch
+ - RabbitMQ
+ - Apache Kafka
+ - PostgreSQL
+ - MongoDB
+ - JUnit5
+
 ## Projenin Çalıştırılması
 
  - Projenin ihtiyaç duyduğu teknolojiler ve veritabanları için docker-compose dosyası çalıştırılır. --> "docker-compose up -d"
