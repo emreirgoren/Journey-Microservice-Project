@@ -102,7 +102,7 @@ Proje microservice mimarisi olarak tasarlanmıştır.
 #### Admin Satış Raporu Görüntüleme İşlemi
 
 ```http
-  POST http://localhost:9000/api/v1/journeys/getSalesReport
+  GET http://localhost:9000/api/v1/journeys/getSalesReport
 ```
 <p align="center">
     <img src ="/screenshots/sales report.png">
@@ -111,7 +111,7 @@ Proje microservice mimarisi olarak tasarlanmıştır.
 #### Kullanıcı Şehre Göre Sefer Arama İşlemleri
 
 ```http
-  POST http://localhost:9000/api/v1/searches/searchByCity
+  GET http://localhost:9000/api/v1/searches/searchByCity
 ```
 <p align="center">
     <img src ="/screenshots/search by city.png">
@@ -120,7 +120,7 @@ Proje microservice mimarisi olarak tasarlanmıştır.
 #### Kullanıcı Şehre ve Taşıt Türüne Göre Sefer Arama İşlemleri
 
 ```http
-  POST http://localhost:9000/api/v1/searches/searchByCityAndVehicleType
+  GET http://localhost:9000/api/v1/searches/searchByCityAndVehicleType
 ```
 <p align="center">
     <img src ="/screenshots/search by city and vehicle type.png">
@@ -129,7 +129,7 @@ Proje microservice mimarisi olarak tasarlanmıştır.
 #### Kullanıcı Şehre ve Tarihe Göre Sefer Arama İşlemleri
 
 ```http
-  POST http://localhost:9000/api/v1/searches/searchByCityAndDepartureDate
+  GET http://localhost:9000/api/v1/searches/searchByCityAndDepartureDate
 ```
 <p align="center">
     <img src ="/screenshots/search by city and departuredate.png">
