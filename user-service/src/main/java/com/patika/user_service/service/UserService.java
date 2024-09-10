@@ -1,5 +1,7 @@
 package com.patika.user_service.service;
 
+import com.patika.user_service.converter.UserConverter;
+import com.patika.user_service.dto.response.ChangeRoleResponse;
 import com.patika.user_service.exception.ExceptionMessages;
 import com.patika.user_service.exception.UserServiceException;
 import com.patika.user_service.model.Role;
@@ -53,7 +55,7 @@ public class UserService {
     }
 
 
-    public boolean changeRole(String email) {
+    public ChangeRoleResponse changeRole(String email) {
 
         Optional<User> optionalUser = userRepository.findByEmail(email);
 
@@ -63,8 +65,9 @@ public class UserService {
         User user = optionalUser.get();
 
         user.getRoleSet().add(roleRepository.findById(1L).get());
+        return UserConverter.userToChangeRoleResponse(user);
 
-        return user.getRoleSet().contains(roleRepository.findById(1L).get());
+        //return user.getRoleSet().contains(roleRepository.findById(1L).get());
 
     }
 

@@ -1,5 +1,6 @@
 package com.patika.user_service.controller;
 
+import com.patika.user_service.dto.response.ChangeRoleResponse;
 import com.patika.user_service.model.User;
 import com.patika.user_service.service.UserService;
 import org.apache.tomcat.util.http.parser.Authorization;
@@ -40,7 +41,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/changeRole/{email}")
-    public boolean changeRole(@PathVariable String email){
+    public ChangeRoleResponse changeRole(@PathVariable String email){
 
         return userService.changeRole(email);
     }

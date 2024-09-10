@@ -1,5 +1,6 @@
 package com.patika.user_service.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import lombok.Setter;
 @Table(name = "roles")
 public class Role {
 
+    @JsonIgnoreProperties
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
