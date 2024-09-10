@@ -138,7 +138,7 @@ Proje microservice mimarisi olarak tasarlanmıştır.
 #### Kullanıcı Bilet Koduna Göre Sefer Arama İşlemleri
 
 ```http
-  POST http://localhost:9000/api/v1/searches/{ticketCode}
+  GET http://localhost:9000/api/v1/searches/{ticketCode}
 ```
 <p align="center">
     <img src ="/screenshots/search ticket code.png">
@@ -165,7 +165,7 @@ Proje microservice mimarisi olarak tasarlanmıştır.
 #### Kullanıcı Sepet Görüntüleme İşlemi
 
 ```http
-  POST http://localhost:9000/api/v1/baskets
+  GET http://localhost:9000/api/v1/baskets
 ```
 <p align="center">
     <img src ="/screenshots/sepet görüntüleme.png">
