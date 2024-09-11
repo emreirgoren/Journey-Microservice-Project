@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
 @Slf4j
 @Component
 public class KafkaProducer {
@@ -26,6 +28,10 @@ public class KafkaProducer {
     public void sendLog(LogTemplate logTemplate){
         log.info("log gönderildi");
             kafkaTemplate.send(KafkaTopicConstants.LOG_TOPIC,logTemplate);
+    }
+
+    public void sendOrderMap(Map forSalesReport){
+        kafkaTemplate.send(KafkaTopicConstants.ORDER,forSalesReport);
     }
 
 

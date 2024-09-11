@@ -33,5 +33,6 @@ public class Ticket {
     private LocalDate departureDate;
     private LocalTime departureTime;
     private double ticketPrice;
+    private int quantity;
 
 }

@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -164,6 +165,34 @@ public class JourneyServiceImpl implements JourneyService {
             throw new JourneyNotFoundException("Sefer Bulunamadı");
         }
         return journeyJpaRepository.findByTicketCode(ticketCode).get();
+    }
+
+    public void forSalesReport(Map<String,Integer> forSalesRepost){
+
+        if(forSalesRepost.isEmpty()){
+            throw new JourneyNotFoundException("Bilet bulunamadı");
+        }
+
+        for (Map.Entry<String,Integer> entry : forSalesRepost.entrySet()){
+            String ticketCode = entry.getKey();
+            Integer quantity = entry.getValue();
+
+            updateJourneyQuantity(ticketCode,quantity);
+        }
+
+    }
+
+    private void updateJourneyQuantity(String ticketCode, Integer quantity) {
+
+        Optional<Journey> journey = journeyJpaRepository.findByTicketCode(ticketCode);
+        if (journey.isEmpty()){
+            throw new JourneyNotFoundException("Sefer Bulunamadı.");
+        }
+        int newQuantity = journey.get().getAvailableTicket() - quantity;
+
+        journey.get().setAvailableTicket(newQuantity);
+        journeyJpaRepository.save(journey.get());
+
     }
 
 

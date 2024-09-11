@@ -10,4 +10,7 @@ public class KafkaTopicConstants {
     public static final String EXCEPTION_TOPIC = "exception-topic";
     public static final String LOG_TOPIC = "log-topic";
     public static final String JOURNEY = "journey-topic";
+
+    public static final String ORDER = "order-topic";
+
 }

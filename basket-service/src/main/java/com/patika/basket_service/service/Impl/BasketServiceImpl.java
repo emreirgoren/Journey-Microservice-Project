@@ -27,7 +27,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -96,6 +98,7 @@ public class BasketServiceImpl implements BasketService {
         }
 
         BigDecimal totalPrice = totalPrice(ticketList);
+        basket.setTotalPrice(totalPrice);
 
         basketRepository.save(basket);
         BasketResponse basketResponse = BasketResponse.builder()
@@ -197,6 +200,15 @@ public class BasketServiceImpl implements BasketService {
 
         rabbitProducer.sendNotification(notification);
 
+        Map<String,Integer> forSalesReport = basket.getTicketList().stream()
+                .collect(Collectors.toMap(
+                        ticket -> ticket.getTicketCode(),
+                        ticket -> ticket.getQuantity() != 0 ? ticket.getQuantity() : 1,
+                        Integer::sum
+                ));
+
+        kafkaProducer.sendOrderMap(forSalesReport);
+
         return GenericResponse.success(paymentRequestToPaymentToBankNumber.getTotalPrice(),HttpStatus.OK,"Payment accepted");
 
     }
@@ -217,6 +229,8 @@ public class BasketServiceImpl implements BasketService {
                 .cardCVC(request.getCardCVC())
                 .totalPrice(totalPrice(basket.getTicketList()))
                 .build();
+        Map<String,Integer> ticketListForSalesReport = new HashMap<>();
+
 
         paymentClientService.paymentToCreditCard(paymentRequestToCreditCard);
 
